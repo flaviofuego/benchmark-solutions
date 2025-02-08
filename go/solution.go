@@ -1,54 +1,60 @@
 package main
 
 import (
-    "fmt"
-    "math"
-    "os"
+	"fmt"
+	"os"
     "time"
 )
 
-func isPrime(n int) bool {
-    if n < 2 {
-        return false
-    }
-    if n == 2 {
-        return true
-    }
-    if n%2 == 0 {
-        return false
-    }
-    sqrtN := int(math.Sqrt(float64(n)))
-    for i := 3; i <= sqrtN; i += 2 {
-        if n%i == 0 {
-            return false
-        }
-    }
-    return true
+var C_ncacheparentesis = map[int][]string{
+	0: {""},
+	1: {"()"},
+	2: {"()()", "(())"},
 }
 
-func sumFirstNPrimes(n int) int {
-    count := 0
-    num := 2
-    total := 0
-    for count < n {
-        if isPrime(num) {
-            total += num
-            count++
-        }
-        num++
-    }
-    return total
+func recursiva(n int) []string {
+	if n == 0 {
+		return []string{""}
+	} else if n == 1 {
+		return []string{"()"}
+	} else if n == 2 {
+		return []string{"()()", "(())"}
+	} else {
+		if _, exists := C_ncacheparentesis[n]; !exists {
+			C_ncacheparentesis[n] = []string{}
+			for m := 0; m < n; m++ {
+				for _, p := range recursiva(m) {
+					for _, q := range recursiva(n - m) {
+						C_ncacheparentesis[n] = append(C_ncacheparentesis[n], p+q)
+						C_ncacheparentesis[n] = append(C_ncacheparentesis[n], q+p)
+						C_ncacheparentesis[n] = append(C_ncacheparentesis[n], p[:len(p)/2]+q+p[len(p)/2:])
+					}
+				}
+			}
+			unique := make(map[string]struct{})
+			for _, v := range C_ncacheparentesis[n] {
+				unique[v] = struct{}{}
+			}
+			C_ncacheparentesis[n] = []string{}
+			for k := range unique {
+				C_ncacheparentesis[n] = append(C_ncacheparentesis[n], k)
+			}
+		}
+		return C_ncacheparentesis[n]
+	}
 }
 
 func main() {
     start := time.Now()
-    total := sumFirstNPrimes(10000)
+    result := recursiva(12)
     elapsed := time.Since(start)
 
     // Escribir el resultado en /output/result_go.txt
     f, err := os.Create("/output/result_go.txt")
     if err == nil {
-        f.WriteString(fmt.Sprintf("%d", total))
+        for _, r := range result {
+            f.WriteString(r + "\n")
+        }
         f.Close()
     }
 

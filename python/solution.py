@@ -1,40 +1,41 @@
 #!/usr/bin/env python3
 import time
-import math
 
-def is_prime(n):
-    if n < 2:
-        return False
-    if n == 2:
-        return True
-    if n % 2 == 0:
-        return False
-    r = int(math.sqrt(n)) + 1
-    for i in range(3, r, 2):
-        if n % i == 0:
-            return False
-    return True
+C_ncacheparentesis = {
+    0: [""],
+    1: ["()"],
+    2: ["()()", "(())"]
+}
 
-def sum_first_n_primes(n):
-    count = 0
-    num = 2
-    total = 0
-    while count < n:
-        if is_prime(num):
-            total += num
-            count += 1
-        num += 1
-    return total
-
+def recursiva(n):
+    if n == 0:
+        return [""]
+    elif n == 1:
+        return ["()"]
+    elif n == 2:
+        return ["()()", "(())"]
+    else:
+        if n not in C_ncacheparentesis:
+            C_ncacheparentesis[n] = []        
+            for m in range(n):
+                for p in recursiva(m):
+                    for q in recursiva(n-m):
+                        C_ncacheparentesis[n].append(p+q)
+                        C_ncacheparentesis[n].append(q+p)
+                        C_ncacheparentesis[n].append(p[0:int(len(p)/2)] + q + p[int(len(p)/2):int(len(p))]   )
+            C_ncacheparentesis[n] = list(set(C_ncacheparentesis[n]))
+        return C_ncacheparentesis[n]
+    
 if __name__ == "__main__":
     start_time = time.time()
-    total = sum_first_n_primes(10000)
+    result = recursiva(12)
     end_time = time.time()
     exec_time_ms = int((end_time - start_time) * 1000)
     
     # Escribir el resultado en /output/result_python.txt
     with open("/output/result_python.txt", "w") as f:
-        f.write(str(total))
+        for r in result:
+            f.write(r + "\n")
     
     # Imprimir únicamente el tiempo de ejecución en ms
     print(exec_time_ms)

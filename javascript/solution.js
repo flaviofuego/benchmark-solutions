@@ -1,38 +1,43 @@
 const fs = require('fs');
 
-function isPrime(n) {
-    if (n < 2) return false;
-    if (n === 2) return true;
-    if (n % 2 === 0) return false;
-    let sqrt = Math.sqrt(n);
-    for (let i = 3; i <= sqrt; i += 2) {
-        if (n % i === 0)
-            return false;
-    }
-    return true;
-}
+const C_ncacheparentesis = {
+    0: [""],
+    1: ["()"],
+    2: ["()()", "(())"]
+};
 
-function sumFirstNPrimes(n) {
-    let count = 0;
-    let num = 2;
-    let total = 0;
-    while (count < n) {
-        if (isPrime(num)) {
-            total += num;
-            count++;
+function recursiva(n) {
+    if (n === 0) {
+        return [""];
+    } else if (n === 1) {
+        return ["()"];
+    } else if (n === 2) {
+        return ["()()", "(())"];
+    } else {
+        if (!C_ncacheparentesis[n]) {
+            C_ncacheparentesis[n] = [];
+            for (let m = 0; m < n; m++) {
+                for (const p of recursiva(m)) {
+                    for (const q of recursiva(n - m)) {
+                        C_ncacheparentesis[n].push(p + q);
+                        C_ncacheparentesis[n].push(q + p);
+                        C_ncacheparentesis[n].push(p.slice(0, p.length / 2) + q + p.slice(p.length / 2));
+                    }
+                }
+            }
+            C_ncacheparentesis[n] = [...new Set(C_ncacheparentesis[n])];
         }
-        num++;
+        return C_ncacheparentesis[n];
     }
-    return total;
 }
 
 const startTime = Date.now();
-const total = sumFirstNPrimes(10000);
+const result = recursiva(12);
 const endTime = Date.now();
 const execTimeMs = endTime - startTime;
 
 // Escribir el resultado en /output/result_javascript.txt
-fs.writeFileSync('/output/result_javascript.txt', total.toString());
+fs.writeFileSync('/output/result_javascript.txt', result.join("\n"));
 
 // Imprimir solo el tiempo de ejecución
 console.log(execTimeMs);
