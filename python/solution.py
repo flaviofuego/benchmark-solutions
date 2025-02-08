@@ -1,4 +1,3 @@
-
 #!/usr/bin/env python3
 import time
 import math
@@ -33,9 +32,9 @@ if __name__ == "__main__":
     end_time = time.time()
     exec_time_ms = int((end_time - start_time) * 1000)
     
-    # Escribir el resultado en /output/result.txt
-    with open("/output/result.txt", "w") as f:
+    # Escribir el resultado en /output/result_python.txt
+    with open("/output/result_python.txt", "w") as f:
         f.write(str(total))
     
-    # Imprimir solo el tiempo de ejecución en ms
+    # Imprimir únicamente el tiempo de ejecución en ms
     print(exec_time_ms)

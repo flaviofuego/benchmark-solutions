@@ -36,8 +36,8 @@ int main() {
     
     auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
     
-    // Escribir el resultado en /output/result.txt
-    std::ofstream outfile("/output/result.txt");
+    // Escribir el resultado en /output/result_cpp.txt
+    std::ofstream outfile("/output/result_cpp.txt");
     outfile << total;
     outfile.close();
     

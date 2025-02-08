@@ -31,8 +31,8 @@ const total = sumFirstNPrimes(10000);
 const endTime = Date.now();
 const execTimeMs = endTime - startTime;
 
-// Escribir el resultado en /output/result.txt
-fs.writeFileSync('/output/result.txt', total.toString());
+// Escribir el resultado en /output/result_javascript.txt
+fs.writeFileSync('/output/result_javascript.txt', total.toString());
 
 // Imprimir solo el tiempo de ejecución
 console.log(execTimeMs);

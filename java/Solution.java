@@ -35,8 +35,8 @@ public class Solution {
         long endTime = System.nanoTime();
         long execTimeMs = (endTime - startTime) / 1000000;
         
-        // Escribir el resultado en /output/result.txt
-        try (FileWriter writer = new FileWriter("/output/result.txt")) {
+        // Escribir el resultado en /output/result_java.txt
+        try (FileWriter writer = new FileWriter("/output/result_java.txt")) {
             writer.write(Long.toString(total));
         } catch(IOException e) {
             e.printStackTrace();

@@ -4,7 +4,6 @@ WORKDIR /app
 
 COPY solution.py .
 
-# Crear el directorio de salida
 RUN mkdir -p /output
 
 CMD ["python", "solution.py"]
