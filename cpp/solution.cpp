@@ -47,9 +47,9 @@ int main() {
     
     // Escribir el resultado en /output/result_cpp.txt
     std::ofstream outfile("/output/result_cpp.txt");
-    for (const auto& r : result) {
-        output_file << r << "\n";
-    }
+    std::string combined_result;
+    for (const auto& r : result) combined_result += r + "\n";
+    outfile << combined_result;
     outfile.close();
     
     // Imprimir solo el tiempo de ejecución en ms
